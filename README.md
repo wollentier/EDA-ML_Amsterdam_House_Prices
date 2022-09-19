@@ -18,7 +18,7 @@ The overarching goal is to create a model that <b>predicts the market price of h
 <br>
 of <b>924 houses</b> within the amsterdam region. <b>Price</b> will be <b>our target</b> to predict and we will focus on the <b>zip-code, space and room count</b> as <b>our predictors</b><br>
 <br>
-#### <ins>Files</ins>
+#### <ins>Files</ins><br>
 <br>
 <ul>
 <li>HousingPrices-Amsterdam-August-2021.csv : containes data from kaggle for house pricing</li>
