@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import json
 
@@ -32,42 +33,45 @@ for i in geodata["features"]:
 # average data for plotting
 avg_data = data.groupby(["Region"]).median().reset_index()[["Region","Price"]]
 
-'''
-# # # # # # # # # # # DATA FOR 2. PLOT # # # # # # # # # # #
 
-# create bins/regions
-new_regions = ["less_0","less_300000","less_600000","less_900000","less_1200000","more_1200000"]
-binned_data = data[["Price","Region","Area","Room","index"]].copy()
+# # # # # # # # # # # DATA FOR BINNED REGION PRICE ZIPS # # # # # # # # # # #
 
-# fit data to bins
-for i in range(len(new_regions)):
-    
-    if (new_regions[i].split("_")[0]) == "less":
-        binned_data[new_regions[i+1]] = binned_data.loc[(binned_data["Price"] <= int(new_regions[i+1].split("_")[1])) & (binned_data["Price"] > int(new_regions[i].split("_")[1])), "Price"]
-        
-    elif new_regions[i].split("_")[0] == "more":
-        binned_data[new_regions[i]] = binned_data.loc[(binned_data["Price"] > int(new_regions[i].split("_")[1])), "Price"]
-        
-    else:
-        break
+region_data = data[["Price","Area","Room","Region"]].copy()
 
+# creating regions based on prices
+new_regions_bins = [[0,300000],[300000,600000],[600000,900000],[900000,1200000],[1200000,1000000000]]
+new_regions = ["0_to_300k","300k_to_600k","600k_to_900k","900k_to_1200k","more_than_1200000"]
 
-# relabel prices to price bin
-for i in new_regions[1:]:
-    binned_data.loc[binned_data[i].isna() == False, i] = i
-    binned_data.loc[binned_data[i].isna() == True, i] = ""
-    if i != new_regions[1]:
-        binned_data[new_regions[1]] += binned_data[i]
-binned_data["Price_Region"] = binned_data[new_regions[1]]
+# # creating dataframe that contains the actual region of each house sorted into the correct new column
+df_data = [list(np.where(region_data["Price"].isin(region_data.loc[(region_data["Price"] > new_regions_bins[i][0]) & (region_data["Price"] <= new_regions_bins[i][1])]["Price"])==True,region_data["Region"].astype(int),0)) for i in range(0,len(new_regions_bins))]
+temp_frame = pd.DataFrame(data=dict(zip(new_regions,df_data)), dtype="int32")
 
-# drop rows with equal Region
-binned_data = (binned_data
-    .drop_duplicates(subset="Region")
-    .reset_index()
-    .drop(columns={*new_regions[1:],"level_0"})
-    )
+# add the new dataframe to the data
+region_data = pd.concat([region_data.reset_index(),temp_frame], axis=1).drop(["index"], axis=1)
 
-# add average price column
-binned_data["Avg_Price"] = avg_data["Price"]
-print(binned_data)
-'''
+# label encoding
+for t,i in enumerate(new_regions):
+    region_data[i] = np.where(region_data[i] == 0,0,t+1)
+
+region_data["price_cat_encoded"] = region_data[new_regions].sum(axis=1)
+region_data = region_data.drop(new_regions, axis=1)
+
+# creating encoding pattern for Label Encoding enabling to properly encode possible future data points for predictions
+encode_pattern_var3 = region_data.copy()
+
+encode_pattern_var3 = [(encode_pattern_var3
+                    .query("Region == @i")
+                    .groupby("price_cat_encoded")
+                    .count()
+                    .idxmax()["Region"]) 
+                    
+                    for i in encode_pattern_var3["Region"].unique()]
+
+encode_pattern_var3 = pd.DataFrame({"Region":list(data["Region"].unique()),"most_frequent_cat":encode_pattern_var3})
+encode_pattern_var3["most_frequent_cat"] = encode_pattern_var3["most_frequent_cat"].astype("category")
+
+# translate the numeric label to the actual label just for later plotting
+temp_for_plot = encode_pattern_var3.copy()
+temp_for_plot["most_frequent_cat"] = temp_for_plot["most_frequent_cat"].replace([1,2,3,4,5],new_regions)
+
+map_price_regions = temp_for_plot.copy()
