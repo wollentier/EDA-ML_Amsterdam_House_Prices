@@ -24,7 +24,6 @@ of <b>924 houses</b> within the amsterdam region. <b>Price</b> will be <b>our ta
 <br>
 <ul>
 <li>HousingPrices-Amsterdam-August-2021.csv : containes data from kaggle for house pricing</li>
-<li>reqs.txt : contains all required packages</li>
 <li>georef-netherlands-postcode-pc4_simple.geojson : contrains coordinates for plotting</li>
 </ul>
 
