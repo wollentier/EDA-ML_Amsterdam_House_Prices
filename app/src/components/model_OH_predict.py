@@ -4,8 +4,8 @@ import pickle
 from sklearn.preprocessing import OneHotEncoder
 
 
-model = pickle.load(open("one_hot_enc_model.sav","rb"))
-enc = pickle.load(open("one_hot_enc.sav","rb"))
+model = pickle.load(open("src/one_hot_enc_model.sav","rb"))
+enc = pickle.load(open("src/one_hot_enc.sav","rb"))
 
 def list_to_pandas(inputs: list) -> pd.DataFrame:
 

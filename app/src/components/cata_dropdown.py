@@ -1,8 +1,7 @@
 from dash import Dash, html, dcc, ctx
 from dash.dependencies import Input, Output
 from . import ids
-
-import map_data as map_data
+from . import map_data
 
 MAP_DATA = map_data.avg_data
 

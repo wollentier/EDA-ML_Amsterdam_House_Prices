@@ -6,7 +6,7 @@ import json
 # # # # # # # # # # # DATA FOR 1. PLOT # # # # # # # # # # #
 
 # Loading dataframe
-data = pd.read_csv("./HousingPrices-Amsterdam-August-2021.csv")
+data = pd.read_csv("src/HousingPrices-Amsterdam-August-2021.csv")
 
 # Renaming Unnamed column and drop NaN rows
 data = data.rename(columns={"Unnamed: 0":"index"})
@@ -19,7 +19,7 @@ data["Area"] = data["Area"].astype(float)
 data["Room"] = data["Room"].astype(int)
 
 # loading geojson data
-geodata=json.load(open("./georef-netherlands-postcode-pc4_simple.geojson","r"))
+geodata=json.load(open("src/georef-netherlands-postcode-pc4_simple.geojson","r"))
 
 #plotly needs specificly "id" within features so we have to copy them from properties to features
 for i in geodata["features"]:

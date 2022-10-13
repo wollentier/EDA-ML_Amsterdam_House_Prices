@@ -1,7 +1,7 @@
 from dash import Dash, html, dcc, ctx
 from dash.dependencies import Input, Output
 from . import ids
-import map_data as map_data
+from . import map_data
 
 all_map_options=list(map_data.avg_data.Region)
 area_options=[int(min(map_data.data["Area"])),max(map_data.data["Area"])]

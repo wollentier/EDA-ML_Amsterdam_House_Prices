@@ -1,7 +1,8 @@
 from dash import Dash, html, dcc, ctx
 from dash.dependencies import Input, Output
 from . import ids
-import model_OH_predict as model_OH_predict
+from . import model_OH_predict
+
 
 def render(app: Dash) -> html.Div:
 

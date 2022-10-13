@@ -1,8 +1,8 @@
 from dash import Dash, html, dcc, ctx
 from dash.dependencies import Input, Output
 from . import ids
+from . import map_data
 
-import map_data as map_data
 
 MAP_DATA = map_data
 

@@ -2,7 +2,7 @@ from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 from . import ids
-import map_data as map_data
+from . import map_data
 
 MAP_DATA = map_data.avg_data
 MAP_PRICE_REGIONS = map_data.map_price_regions
