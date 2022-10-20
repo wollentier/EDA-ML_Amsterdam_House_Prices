@@ -8,6 +8,9 @@ def render(app: Dash) -> html.Div:
 
     model = model_OH_predict.model
     enc = model_OH_predict.enc
+
+    model_label = model_OH_predict.model_label
+    enc_label = model_OH_predict.enc_label
     
     text = "Prediction"
     Input_Fields = ["Area m²", "Rooms #","Zip Code"]
@@ -42,9 +45,13 @@ def render(app: Dash) -> html.Div:
             
             args = [int(i) for i in args]
             
+            #data = model_OH_predict.list_to_pandas(list(args))
+            #data = model_OH_predict.OH_encoding(data,enc,"Region")
+            #text = str(model_OH_predict.OH_prediction(data))
+
             data = model_OH_predict.list_to_pandas(list(args))
-            data = model_OH_predict.OH_encoding(data,enc,"Region")
-            text = str(model_OH_predict.OH_prediction(data))
+            data = model_OH_predict.label_encoding(data,"price_cat_encoded",enc_label,"most_frequent_cat")
+            text = str(model_OH_predict.label_prediction(data))
             text = " Predicted House Price: "+text+" Euro"
             
             return text
