@@ -6,14 +6,17 @@ from sklearn.preprocessing import OneHotEncoder
 
 model = pickle.load(open("src/one_hot_enc_model.sav","rb"))
 enc = pickle.load(open("src/one_hot_enc.sav","rb"))
+scaler = pickle.load(open("src/scaler_fit.sav","rb"))
 
 model_label = pickle.load(open("src/label_enc_model.sav","rb"))
 enc_label = pickle.load(open("src/label_enc.sav","rb"))
 
-def list_to_pandas(inputs: list) -> pd.DataFrame:
+def list_to_pandas_scaled(inputs: list,to_scale: list) -> pd.DataFrame:
 
     temp = {"Area": [inputs[0]],"Room": [inputs[1]],"Region": [inputs[2]]}
     temp = pd.DataFrame(temp)
+    temp[to_scale] = pd.DataFrame(scaler.transform(temp[to_scale]), columns=to_scale)
+    
 
     return temp
 

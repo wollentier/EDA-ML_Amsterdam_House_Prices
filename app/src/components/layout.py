@@ -44,6 +44,11 @@ def create_layout(app: Dash) -> html.Div:
                 children=[
                 *user_prediction.render(app)],
             )
-        ]
+        ],
+        style={
+            "margin-left": "3rem",
+            "margin-right": "3rem",
+            "padding": "3rem 3rem",
+        }
     )
     return layout
