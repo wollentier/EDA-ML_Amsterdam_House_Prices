@@ -8,7 +8,7 @@ app = Dash(server=server,external_stylesheets=[SANDSTONE])
 
 app.title = "Amsterdam House Prices"
 app.layout = create_layout(app)
-    #app.run()
+
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", port="8050")
