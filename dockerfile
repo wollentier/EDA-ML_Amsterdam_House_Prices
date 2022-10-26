@@ -12,7 +12,7 @@ RUN pip install plotly
 RUN pip install dash
 RUN pip install dash_bootstrap_components
 RUN pip install sklearn
-#RUN pip install xgboost
+RUN pip install xgboost
 
 EXPOSE 8050:8050
 CMD ["python", "/main.py"]
